@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "liftbridge.fullname" . }}
+  labels:
+    {{- include "liftbridge.labels" . | nindent 4 }}
+spec:
+  podManagementPolicy: {{ .Values.podManagementPolicy }}
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "liftbridge.labels" . | nindent 6 }}
+  serviceName: {{ include "liftbridge.fullname" . }}-headless
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "liftbridge.labels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "liftbridge.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+          - containerPort: {{ .Values.liftbridge.port }}
+            name: grpc
+          readinessProbe:
+            exec:
+              command:
+              - /bin/grpc_health_probe
+              - -service=proto.API
+              - -addr=:{{ .Values.liftbridge.port }}
+            initialDelaySeconds: 5
+          volumeMounts:
+          - mountPath: /data
+            name: liftbridge-data
+          - mountPath: /etc/liftbridge.yaml
+            name: config
+            subPath: liftbridge.yaml
+      volumes:
+      - configMap:
+          name: {{ include "liftbridge.fullname" . }}
+        name: config
+      {{- if not .Values.persistence.enabled }}
+      - name: liftbridge-data
+        emptyDir: {}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- if .Values.persistence.enabled }}
+  volumeClaimTemplates:
+  - metadata:
+      name: liftbridge-data
+    {{- if .Values.persistence.annotations }}
+      annotations:
+        {{ toYaml .Values.persistence.annotations | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "liftbridge.labels" . | nindent 8 }}
+    spec:
+      accessModes:
+        - {{ .Values.persistence.accessMode | quote }}
+      resources:
+        requests:
+          storage: {{ .Values.persistence.size | quote }}
+    {{- if .Values.persistence.storageClass }}
+    {{- if (eq "-" .Values.persistence.storageClass) }}
+      storageClassName: ""
+    {{- else }}
+      storageClassName: "{{ .Values.persistence.storageClass }}"
+    {{- end }}
+    {{- end }}
+{{- end }}
