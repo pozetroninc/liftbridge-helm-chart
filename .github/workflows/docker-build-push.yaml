@@ -10,6 +10,10 @@ jobs:
         uses: wei/wget@v1.1.1
         with:
             args: -O Dockerfile https://raw.githubusercontent.com/liftbridge-io/liftbridge/master/k8s/Dockerfile.k8s
+      - ID: checkout
+        uses: actions/checkout@v2
+        with:
+            repository: liftbridge-io/liftbridge
       - uses: docker/build-push-action@v1
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
