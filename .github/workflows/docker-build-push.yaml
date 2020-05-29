@@ -6,6 +6,10 @@ jobs:
     name: RemoteDockerImage
     runs-on: ubuntu-latest
     steps:
+      - id: liftbridge
+        uses: pozetroninc/github-action-get-latest-release@master
+        with:
+            repository: liftbridge-io/liftbridge
       - id: wget
         uses: wei/wget@v1.1.1
         with:
@@ -20,6 +24,6 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: pozetroninc/liftbridge
           dockerfile: Dockerfile
-          tags: latest
+          tags: latest, ${{ steps.liftbridge.outputs.release }}
           tag_with_ref: true
           tag_with_sha: true
