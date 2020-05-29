@@ -18,10 +18,10 @@ nats:
       password: "T0pS3cr3t"
 
 image:
-  repository: liftbridge
-  pullPolicy: IfNotPresent  
+  repository: pozetroninc/liftbridge
+  pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart version.
-  tag: "f3fa873900bd357fd5ac6a603ab3045f8d02840d15eb4adf50ab5d467227cff3"
+  tag: "latest"
 
 imagePullSecrets: []
 nameOverride: ""
