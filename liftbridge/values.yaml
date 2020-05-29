@@ -21,7 +21,7 @@ image:
   repository: pozetroninc/liftbridge
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart version.
-  tag: "latest"
+  # tag: "latest"
 
 imagePullSecrets: []
 nameOverride: ""
