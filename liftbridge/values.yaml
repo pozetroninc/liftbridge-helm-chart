@@ -1,0 +1,76 @@
+# Default values for liftbridge.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 3
+
+liftbridge:
+  port: 9292
+  loglevel: debug
+  minInsyncReplicas: 1
+
+nats:
+  - address: nats-cluster.nats-io.svc
+    port: 4222
+    auth:
+      enabled: true
+      username: "my-user"
+      password: "T0pS3cr3t"
+
+image:
+  repository: liftbridge
+  pullPolicy: IfNotPresent  
+  # Overrides the image tag whose default is the chart version.
+  tag: "f3fa873900bd357fd5ac6a603ab3045f8d02840d15eb4adf50ab5d467227cff3"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+persistence:
+  enabled: true
+# Annotations to add on persistence resources
+  annotations: {}
+# Storage settings to create a PV and PVC
+  size: 100Mi
+# For no storage class enter "-", empty or not specifying will result in default storage class
+#  storageClass: hostpath
+  accessMode: ReadWriteOnce
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podManagementPolicy: Parallel
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
