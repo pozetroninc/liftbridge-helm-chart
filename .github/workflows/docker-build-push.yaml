@@ -1,0 +1,21 @@
+name: Build Docker Image
+on: [push]
+
+jobs:
+  k8s:
+    name: RemoteDockerImage
+    runs-on: ubuntu-latest
+    steps:
+      - id: wget
+        uses: wei/wget@v1.1.1
+        with:
+            args: -O Dockerfile https://raw.githubusercontent.com/liftbridge-io/liftbridge/master/k8s/Dockerfile.k8s
+      - uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: pozetroninc/liftbridge
+          dockerfile: Dockerfile
+          tags: latest
+          tag_with_ref: true
+          tag_with_sha: true
