@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "liftbridge.fullname" . }}-headless
+  labels:
+    {{- include "liftbridge.labels" . | nindent 4 }}
+spec:
+  clusterIP: None
+  ports:
+  - name: grpc
+    port: {{ .Values.liftbridge.port }}
+    protocol: TCP
+    targetPort: grpc
+  selector:
+    {{- include "liftbridge.labels" . | nindent 4 }}
