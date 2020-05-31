@@ -32,7 +32,7 @@ persistence:
 # Annotations to add on persistence resources
   annotations: {}
 # Storage settings to create a PV and PVC
-  size: 100Mi
+  size: 1G
 # For no storage class enter "-", empty or not specifying will result in default storage class
 #  storageClass: hostpath
   accessMode: ReadWriteOnce

@@ -1,0 +1,13 @@
+Thank you for installing {{ .Chart.Name }}. Your release is named {{ .Release.Name }}.
+
+Liftbridge is available on port {{ .Values.liftbridge.port }} with DNS name
+{{ template "liftbridge.fullname" . }}.{{ .Release.Namespace }}.svc.
+from within your cluster.
+
+You can access Liftbridge from your current command line with:
+  $ kubectl port-forward svc/{{ template "liftbridge.fullname" . }} {{ .Values.liftbridge.port }} &
+
+To learn more about this release, try:
+
+  $ helm status {{ .Release.Name }}
+  $ helm get all {{ .Release.Name }}
