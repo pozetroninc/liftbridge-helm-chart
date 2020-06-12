@@ -6,7 +6,7 @@ replicaCount: 3
 
 liftbridge:
   port: 9292
-  loglevel: debug
+  loglevel: info
   minInsyncReplicas: 1
 
 nats:
@@ -28,7 +28,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 persistence:
-  enabled: true
+  enabled: false
 # Annotations to add on persistence resources
   annotations: {}
 # Storage settings to create a PV and PVC
