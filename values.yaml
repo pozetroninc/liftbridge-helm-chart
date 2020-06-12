@@ -15,6 +15,7 @@ nats:
     auth:
       enabled: true
       username: "my-user"
+      # This password MUST be changed.
       password: "T0pS3cr3t"
 
 image:
