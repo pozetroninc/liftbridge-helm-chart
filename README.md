@@ -30,7 +30,7 @@ $ helm upgrade --install liftbridge --namespace liftbridge-io pozetron/liftbridg
 | nats[].port | int | `4222` | Port of the nat cluster |
 | nats[].port.auth.enabled | boolean | `true` | Set to true if NATS cluster is secured by authentication |
 | nats[].port.auth.username | string | `my-user` | Username for the NATS cluster |
-| nats[].port.auth.password| string | - | `"Username for the NATS cluster"` |
+| nats[].port.auth.password| string | `T0pS3cr3t` | Password for the NATS cluster. This default MUST be changed. |
 | image.repository | string | `"pozetroninc/liftbridge"` | The Docker (Hub) repository for the image. |
 | image.tag | string | `""` | The version of KeyDB to install e.g. "v5.3.3" |
 | persistence.enabled | bool | `false` |  |
